@@ -1,0 +1,171 @@
+
+10  15  30  40  50  100  40 
+
+10
+10
+
+15  40  30  40  50  100 
+
+
+
+
+```
+
+class MinHeap {
+
+
+    constructor() {
+        this.heap = []
+    }
+
+    // 1. Get Index Helper Functions
+
+    getLeftChildIndex(parentIndex) {
+        return ( 2 * parentIndex ) + 1;
+    }
+
+    getRightChildIndex(parentIndex) {
+        return ( 2 * parentIndex ) + 2;
+    }
+
+    getParentIndex(childIndex) {
+        return ( childIndex - 1 ) / 2;
+    }
+
+    // 2. check If present Helper function
+
+    hasLeftChild(parentIndex){
+        return this.getLeftChildIndex(parentIndex) < this.heap.length;
+    }
+
+    hasRightChild(parentIndex){
+        return this.getRightChildIndex(parentIndex) < this.heap.length;
+    }
+
+    hasParent(childIndex){
+        return this.getParentIndex(childIndex) >= 0;
+    }
+
+    // 3. Get value helper function
+
+    getLeftChild(parentIndex){
+        return this.heap[ this.getLeftChildIndex(parentIndex) ];
+    }
+
+    getRightChild(parentIndex){
+        return this.heap[ this.getRightChildIndex(parentIndex) ];
+    }
+
+    getParent(childIndex){
+        return this.heap[ this.getParentIndex(childIndex) ];
+    }
+
+    // 4. Heap management funcitons
+
+    // CREATE
+
+    swap(index1,index2) {
+        var temp = this.heap[index1];
+        this.heap[index1] = this.heap[index2] ;
+        this.heap[index2] = temp;
+    }
+
+    add(item) {
+        this.heap.push(item);
+        this.heapifyUp();
+    }
+
+    heapifyUp() {
+        var currentIndex = this.heap.length - 1;
+        while ( this.hasParent(currentIndex) && ( this.getParent(currentIndex) > this.heap[currentIndex] ) ){
+            this.swap(currentIndex, this.getParentIndex(currentIndex) );
+            currentIndex = this.getParentIndex(currentIndex);
+        }
+    }
+
+    // PEEK - return thr top value in heap
+
+    peek() {
+        if (this.heap.length == 0) {
+            return null;
+        }
+        return this.heap[0];
+    }
+
+    // Remove - delete the top value in heap
+
+    remove() {
+        if (this.heap.length == 0 ) {
+            return null;
+        }
+        var removedElement = this.heap[0];
+        var lastElement = this.heap.pop();
+        this.heap[0] = lastElement;
+        this.heapifyDown();
+        return removedElement;
+    }
+
+    heapifyDown() {
+        var currentIndex = 0;
+        while ( this.hasLeftChild(currentIndex)) {
+
+            // find smaller child among left and right child
+
+            var smallerChildIndex = this.getLeftChildIndex(currentIndex);
+            if( this.hasRightChild(currentIndex) && ( this.getRightChild(currentIndex) < this.getLeftChild(currentIndex) ) ) {
+                smallerChildIndex = this.getRightChildIndex(currentIndex);
+            }
+            
+            // compare the current node with smaller child node
+            if ( this.heap[currentIndex] < this.heap[smallerChildIndex] ){
+                break;
+            }
+            this.swap(currentIndex,smallerChildIndex);
+            currentIndex = smallerChildIndex;
+        }
+    }
+
+    // Print heap values
+
+    printHeap() {
+        console.log(this.heap);
+    }
+    
+}
+
+
+
+// Creating the Heap
+var heap = new MinHeap();
+ 
+// Adding The Elements
+heap.add(10);
+heap.add(15);
+heap.add(30);
+heap.add(40);
+heap.add(50);
+heap.add(100);
+heap.add(40);
+ 
+// Printing the Heap
+heap.printHeap();
+ 
+// Peeking And Removing Top Element
+console.log(heap.peek());
+console.log(heap.remove());
+ 
+// Printing the Heap
+// After Deletion.
+heap.printHeap();
+
+
+```
+
+
+
+
+
+
+
+
+
